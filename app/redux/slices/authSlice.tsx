@@ -10,7 +10,7 @@ interface Organization {
 }
 
 interface AuthState {
-  isAuthenticated: boolean | undefined;
+  isAuthenticated: any;
   user: User | undefined;
   token: string | undefined;
   activeOrganization: ActiveOrganization | null;
@@ -24,12 +24,18 @@ let token: any = null;
 
 if (typeof window !== "undefined") {
   const storedUser = localStorage.getItem("user");
+  console.log(storedUser, "localStorage")
   if (storedUser) user = storedUser;
 }
 
 if (typeof window !== "undefined") {
-  const storedactiveOrg = localStorage.getItem("activeOrg");
-  if (storedactiveOrg) activeOrg = storedactiveOrg;
+  const storedactiveOrgString = localStorage.getItem("activeOrg");
+  if (storedactiveOrgString) {
+    const storedactiveOrg = JSON.parse(storedactiveOrgString);
+    if (storedactiveOrg) {
+      activeOrg = storedactiveOrg;
+    }
+  }
 }
 
 if (typeof window !== "undefined") {

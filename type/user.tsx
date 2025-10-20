@@ -20,12 +20,12 @@ export interface User {
       price: number;
       features: {
         "time-tracking": string | null;
-        "timesheet": string | null;
+        timesheet: string | null;
         "activity-level": string | null;
         "blur-screenshots": string | null;
         "clear-screenshots": string | null;
-        "projects": string;
-        "departments": string;
+        projects: string;
+        departments: string;
         "screenshot-retention": string;
         "idle-timeout": string | null;
         "email-support": string | null;
@@ -45,4 +45,17 @@ export interface User {
       };
     };
   }[];
+}
+
+export interface RegisterValues {
+  name: string;
+  email: string;
+  password: string;
+  terms: boolean;
+}
+
+export interface PostProps {
+  url: string;
+  postData: RegisterValues;
+  config?: any;
 }

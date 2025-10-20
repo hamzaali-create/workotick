@@ -1,6 +1,6 @@
 "use client";
 import Api from "@/utils/Axios";
-import { Checkbox, Input, Button, message as Notify } from "antd";
+import { Button, Checkbox, Form, Input, Typography, message } from "antd";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
@@ -8,13 +8,10 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import Guest from "../middleware/guest";
 import AuthLayout from "@/layouts/AuthLayout";
-import  Typography  from "antd";
-import { Form } from "antd";
+
 import Link from "next/link";
 import { setAuthenticated } from "../redux/slices/authSlice";
 function Login() {
-
-    
   const [emailDisabled, setEmailDisabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
@@ -48,12 +45,16 @@ function Login() {
 
   const handleFormSubmit = useCallback(
     async (values: any) => {
-
-        console.log(values, "postData")
+      console.log(values, "postData");
       try {
         setLoading(true);
-        const { data, message } = await Api.Post("/login", values);
-        console.log(data, "data" , message)
+        // const { data, message } = await Api.Post("/login", values);
+        // console.log(data, "data" , message)
+
+        const { data, message }: any = await Api.Post({
+          url: "/login",
+          postData: values,
+        });
         dispatch(setAuthenticated(data));
         if (redirectedFromInvite) {
           // false condition alwayes
@@ -61,7 +62,7 @@ function Login() {
         } else {
           router.push("/");
         }
-        Notify.success(message);
+        // Notify.success(message);
       } catch (error: any) {
         if (error.response) {
           if (error.response.status === 422) {
@@ -76,7 +77,7 @@ function Login() {
           }
         } else {
           console.error(error);
-          Notify.error("Something went wrong");
+          // Notify.error("Something went wrong");
         }
       } finally {
         setLoading(false);
@@ -84,8 +85,6 @@ function Login() {
     },
     [dispatch, loginForm, router, redirectedFromInvite, searchParams]
   );
-
-  const { Title, Paragraph, Text } = Typography;
 
   return (
     <>

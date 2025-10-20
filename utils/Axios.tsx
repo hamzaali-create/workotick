@@ -1,3 +1,4 @@
+import { PostData, PostProps } from "@/type/user";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 // Extend AxiosInstance to include your custom methods
@@ -30,7 +31,7 @@ Api.Get = async (url: string, params: string, config: any = {}) => {
   return data;
 };
 
-Api.Post = async (url: string, postData: string, config: any = {}) => {
+Api.Post = async ({ url, postData, config = {} }: PostProps) => {
   const { data } = await Api.post(url, postData, config);
   return data;
 };
