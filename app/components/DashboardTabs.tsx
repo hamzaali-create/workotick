@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { hasRole } from "@/utils/permissions";
 import MyReport from "./ReportPage/MyReport";
 
-interface
+
 
 export default function DashboardTabs() {
   const activeOrganization = useSelector(
