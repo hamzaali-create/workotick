@@ -58,4 +58,12 @@ export interface PostProps {
   url: string;
   postData: RegisterValues;
   config?: any;
+ 
+}
+
+
+export interface GetProps {
+  url: string;
+  params?: Record<string, any>; // example: ?page=1&limit=10
+  config?: Record<string, any>;
 }

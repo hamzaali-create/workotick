@@ -1,4 +1,4 @@
-import { PostData, PostProps } from "@/type/user";
+import {  PostProps } from "@/type/user";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 // Extend AxiosInstance to include your custom methods
@@ -10,7 +10,7 @@ interface CustomAxiosInstance extends AxiosInstance {
 }
 
 const Api = axios.create({
-  baseURL: "https://app.backend.workotick.com/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   headers: { "Content-Type": "application/json" },
   timeout: 1000 * 60,
 }) as CustomAxiosInstance;

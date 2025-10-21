@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function TimeSummaryData({ projects, total }) {
+export default function TimeSummaryData({ projects, total }:any) {
 
   return (
     <div>
@@ -10,7 +10,7 @@ export default function TimeSummaryData({ projects, total }) {
           Logged Time 
         </p>
       </div>
-      {projects.map((data) => (
+      {projects.map((data:any) => (
         <div
           className="flex justify-between border-b border-[#F2F2F2]"
           key={data.id}

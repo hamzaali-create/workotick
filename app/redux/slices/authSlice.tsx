@@ -30,6 +30,7 @@ if (typeof window !== "undefined") {
 
 if (typeof window !== "undefined") {
   const storedactiveOrgString = localStorage.getItem("activeOrg");
+   console.log(storedactiveOrgString, "storedactiveOrgString")
   if (storedactiveOrgString) {
     const storedactiveOrg = JSON.parse(storedactiveOrgString);
     if (storedactiveOrg) {

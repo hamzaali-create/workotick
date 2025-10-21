@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs } from "antd";
 // import "../index.css";
 // import MyReport from "./ReportPage/MyReport";
-// import TeamReport from "./ReportPage/TeamReport";
+import TeamReport from "./ReportPage/TeamReport";
 import { useSelector } from "react-redux";
 import { hasRole } from "@/utils/permissions";
 import MyReport from "./ReportPage/MyReport";
@@ -23,7 +23,7 @@ export default function DashboardTabs() {
     {
       label: "Team Report",
       key: "2",
-      // children: <TeamReport />,
+      children: <TeamReport />,
     },
   ];
 

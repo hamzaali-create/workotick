@@ -1,32 +1,33 @@
+"use client";
+import Api from "@/utils/Axios";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
-import Chart from "react-apexcharts";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+
 import { useSelector } from "react-redux";
-import Api from "../../utils/Axios";
 
 const TopPerformersChart = ({ date }) => {
-
   const [chartData, setChartData] = useState({});
-  const { activeOrganization } = useSelector((state) => state.auth);
+  const  activeOrganization  = useSelector((state:any) => state.auth?.activeOrganization);
 
   const getTopPerformers = useCallback(async () => {
     try {
-      const { data } = await Api.Post(
-        `/organization/${activeOrganization?.id}/team-report/top-performer`,
-        {
-          date: date.toISOString()
-        }
-      );
+      const { data } = await Api.Post({
+        url: `/organization/${activeOrganization?.id}/team-report/top-performer`,
+        postData: {
+          date: date.toISOString(),
+        },
+      });
 
       // Shorten user names
-    const shortenedData = {
-      ...data,
-      users: data.users.map(name =>
-        name.length > 15 ? name.substring(0, 15) + "..." : name
-      ),
-    };
+      const shortenedData = {
+        ...data,
+        users: data.users.map((name) =>
+          name.length > 15 ? name.substring(0, 15) + "..." : name
+        ),
+      };
 
       setChartData(shortenedData);
-
     } catch (error) {
       console.error(error);
     }
@@ -60,18 +61,18 @@ const TopPerformersChart = ({ date }) => {
   };
 
   useEffect(() => {
-    getTopPerformers()
-  }, [getTopPerformers])
+    getTopPerformers();
+  }, [getTopPerformers]);
 
   return (
-    <div className='bg-white -mx-4 rounded-md'>
+    <div className="bg-white -mx-4 rounded-md">
       <Chart
         options={{
           ...state.options,
         }}
         series={state.series}
-        type='bar'
-        width='100%'
+        type="bar"
+        width="100%"
         height={400}
       />
     </div>

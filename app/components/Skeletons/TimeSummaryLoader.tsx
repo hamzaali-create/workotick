@@ -1,4 +1,5 @@
-import { Skeleton } from 'antd'
+
+import Skeleton from "antd/es/skeleton";
 import React from 'react'
 
 export default function TimeSummaryLoader() {

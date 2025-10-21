@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useState } from "react";
 // } from "react-router-dom";
 
 import { Button, Checkbox, Form, Input, Typography, message } from "antd";
+const Title = dynamic(() => import('antd/es/typography/Title'), { ssr: false });
 
 import PasswordStrengthBar from "react-password-strength-bar";
 import { useForm, useWatch } from "antd/es/form/Form";
@@ -17,6 +18,7 @@ import { setAuthenticated } from "../redux/slices/authSlice";
 import Link from "next/link";
 import Api from "@/utils/Axios";
 import { RegisterApiResponse, RegisterFormValues } from "@/type/register";
+import dynamic from "next/dynamic";
 
 export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -107,12 +109,12 @@ export default function Register() {
       <Guest>
         <AuthLayout>
           <div className="mt-5 mb-5">
-            <Typography.Title
+            <Title
               level={2}
               className="text-left text-dark font-semibold font-poppins"
             >
               Create new account
-            </Typography.Title>
+            </Title>
             <Typography.Paragraph className="font-poppins font-light">
               Sign Up, Stay Ahead — Begin Your Activity Journey Today.
             </Typography.Paragraph>

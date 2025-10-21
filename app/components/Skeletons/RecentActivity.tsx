@@ -1,17 +1,25 @@
-import { Button, Empty } from "antd";
-import { useNavigate } from "react-router-dom";
+
+import Empty from "antd/es/empty";
+import Button from "antd/es/button";
+
+
+
+
+
 import Screenshot from "../Screenshots/Screenshot";
 import DetailModal from "../Screenshots/DetailModal";
 import { useCallback, useEffect, useState } from "react";
-import { canViewScreenshots } from "../../utils/permissions";
-import { useSelector } from "react-redux";
 
-export default function RecentActivity({ activities, date, onRefresh }) {
-  const { activeOrganization } = useSelector((state) => state.auth);
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { canViewScreenshots } from "@/utils/permissions";
+
+export default function RecentActivity({ activities, date, onRefresh }:any) {
+  const  activeOrganization  = useSelector((state:any) => state.auth?.activeOrganization);
   const [screenshots, setScreenshots] = useState([]);
   const [selectedScreenshot, setSelectedScreenshot] = useState(undefined);
   const [showDetailModal, setShowDetailModal] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleShowScreenshot = useCallback((screenshot) => {
     setSelectedScreenshot(screenshot);
@@ -52,7 +60,7 @@ export default function RecentActivity({ activities, date, onRefresh }) {
         {canViewScreenshots(activeOrganization) && (
         <Button
           className="bg-[#3376FF] px-6 py-1 text-white rounded-md h-10 border-0"
-          onClick={() => navigate(`/screenshots?date=${date.format("YYYY-MM-DD")}`)}
+          onClick={() => router.push(`/screenshots?date=${date.format("YYYY-MM-DD")}`)}
         >
             View All
           </Button>
@@ -76,13 +84,13 @@ export default function RecentActivity({ activities, date, onRefresh }) {
           />
         ))}
 
-        <DetailModal
+        {/* <DetailModal
           onClose={() => setShowDetailModal(false)}
           open={showDetailModal}
           screenshot={selectedScreenshot}
           onNext={() => handleSlider("next")}
           onPrev={() => handleSlider("prev")}
-        />
+        /> */}
       </div>
     </div>
   );

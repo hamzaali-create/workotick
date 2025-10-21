@@ -10,6 +10,7 @@ export default function Home() {
   // const {activeOrganization, isAuthenticated} = useSelector((state:any) => state.auth);
   const auth = useSelector((state: any) => state.auth);
   const { activeOrganization, isAuthenticated } = auth;
+  console.log(activeOrganization, "activeOrganization")
 
   const router = useRouter();
 

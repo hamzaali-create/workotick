@@ -5,15 +5,18 @@ import RecentActivity from "./RecentActivity";
 import TeamTimeSummary from "./TeamTimeSummary";
 import TeamReportTable from "./TeamReportTable";
 import { useSelector } from "react-redux";
-import Api from "../../utils/Axios";
-import RecentActivitiesLoader from "../Skeletons/RecentActivities";
+
+import RecentActivitiesLoader from "../Skeletons/RecentActivitiesLoader";
 import LazyLoad from "../LazyLoad";
 import CustomDatePicker from "../CustomDatePicker";
 import dayjs from "dayjs";
-import { canViewScreenshots } from "../../utils/permissions";
+import { canViewScreenshots } from "@/utils/permissions";
+import Api from "@/utils/Axios";
 
 export default function TeamReport() {
-  const { activeOrganization } = useSelector((state) => state.auth);
+  const activeOrganization = useSelector(
+    (state) => state.auth?.activeOrganization
+  );
   const [activities, setActivities] = useState([]);
   const [screenshotLoading, setScreenshotLoading] = useState(false);
   const [date, setCurrentDate] = useState(dayjs());
@@ -24,12 +27,10 @@ export default function TeamReport() {
     }
     try {
       setScreenshotLoading(true);
-      let { data } = await Api.Post(
-        `/organization/${activeOrganization?.id}/team-report/recent-activities`,
-        {
-          date: date.toISOString(),
-        }
-      );
+      let { data } = await Api.Post({
+        url: `/organization/${activeOrganization?.id}/team-report/recent-activities`,
+        postData: { date: date.toISOString() },
+      });
       data = data.splice(0, 3);
       setActivities(data);
     } catch (error) {

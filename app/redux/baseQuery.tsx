@@ -6,20 +6,28 @@ import type {
 } from "@reduxjs/toolkit/query";
 
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: process.env.REACT_APP_BACKEND_URL,
-  prepareHeaders: (headers) => {
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    const activeOrg =
-      typeof window !== "undefined" ? localStorage.getItem("activeOrg") : null;
+  baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
+ prepareHeaders: (headers) => {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const activeOrg =
+    typeof window !== "undefined" ? localStorage.getItem("activeOrg") : null;
 
-    if (token) headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
-    if (activeOrg) {
+  // ✅ Fix here
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+
+  if (activeOrg) {
+    try {
       const org = JSON.parse(activeOrg);
-      if (org?.id) headers.set("organization_id", org.id);
+      if (org?.id) headers.set("organization_id", org.id.toString());
+    } catch (err) {
+      console.error("Error parsing activeOrg:", err);
     }
-    return headers;
-  },
+  }
+
+  return headers;
+}
+
 });
 
 export const baseQuery: BaseQueryFn<

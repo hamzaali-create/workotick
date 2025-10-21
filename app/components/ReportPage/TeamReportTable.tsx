@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Table , Empty, Tooltip } from "antd";
-import { useSelector } from "react-redux";
-import Api from "../../utils/Axios";
-import { getFormattedTimestamp } from "../../utils/helpers";
-import { sortTime } from '../../utils/sortTime';
 
+import Table from "antd/es/table";
+import Empty from "antd/es/empty";
+import Tooltip from "antd/es/tooltip";
+import { useSelector } from "react-redux";
+import Api from "@/utils/Axios";
+import { getFormattedTimestamp } from "@/utils/helpers";
 
 // const rowSelection = {
 //   onChange: (selectedRowKeys, selectedRows) => {
@@ -21,8 +22,7 @@ import { sortTime } from '../../utils/sortTime';
 //   }),
 // };
 const TeamReportTable = ({ date }) => {
-
-  const { activeOrganization } = useSelector((state) => state.auth);
+  const  activeOrganization  = useSelector((state) => state.auth?.activeOrganization);
   const [records, setRecords] = useState([]);
   const parseTime = (timeString) => {
     const [hours, minutes] = timeString.split(":").map(Number);
@@ -42,45 +42,47 @@ const TeamReportTable = ({ date }) => {
     },
     {
       title: (
-        <div className='flex items-center gap-1'>
-          <span className='ml-2'>Clock-in</span>
+        <div className="flex items-center gap-1">
+          <span className="ml-2">Clock-in</span>
         </div>
       ),
       dataIndex: "clock_in",
       sorter: (a, b) => new Date(a.clock_in) - new Date(b.clock_in),
-      render: (text) => getFormattedTimestamp(text, activeOrganization.timezone, 'hh:mm A')
+      render: (text) =>
+        getFormattedTimestamp(text, activeOrganization.timezone, "hh:mm A"),
     },
     {
       title: (
-        <div className='flex items-center gap-1'>
-          <span className='ml-2'>Active Time</span>
+        <div className="flex items-center gap-1">
+          <span className="ml-2">Active Time</span>
         </div>
       ),
       dataIndex: "active_time",
-       sorter: sortTime("active_time"),
+      //  sorter: sortTime("active_time"),
     },
     {
       title: (
-        <div className='flex items-center gap-1'>
-          <span className='ml-2'>Logged Time</span>
+        <div className="flex items-center gap-1">
+          <span className="ml-2">Logged Time</span>
         </div>
       ),
       dataIndex: "logged_time",
-      sorter: sortTime("logged_time"),
+      // sorter: sortTime("logged_time"),
     },
     {
       title: "Clock out",
       dataIndex: "clock_out",
       sorter: (a, b) => new Date(a.clock_in) - new Date(b.clock_in),
-      render: (text) => getFormattedTimestamp(text, activeOrganization.timezone, 'hh:mm A')
+      render: (text) =>
+        getFormattedTimestamp(text, activeOrganization.timezone, "hh:mm A"),
     },
     {
       title: (
-        <div className='flex items-center gap-1'>
-          <span className='ml-2'>Remaing-Time (hrs)</span>
+        <div className="flex items-center gap-1">
+          <span className="ml-2">Remaing-Time (hrs)</span>
         </div>
       ),
-       sorter: (a, b) => {
+      sorter: (a, b) => {
         const remainingTimeA = a.remaining_time ?? "00:00"; // Use 0 if remaining_time is undefined
         const remainingTimeB = b.remaining_time ?? "00:00"; // Use 0 if remaining_time is undefined
         const overtimeA = a.overtime ?? "00:00"; // Use 0 if overtime is undefined
@@ -96,7 +98,11 @@ const TeamReportTable = ({ date }) => {
       },
       dataIndex: "remaining_time",
       render: (_, record) => (
-        <div className={`px-2 py-1 ${record.remaining_time ? 'bg-primary' : 'bg-green-500'} rounded-full w-20 text-white mx-auto text-center`}>
+        <div
+          className={`px-2 py-1 ${
+            record.remaining_time ? "bg-primary" : "bg-green-500"
+          } rounded-full w-20 text-white mx-auto text-center`}
+        >
           <p>{record.remaining_time ?? `+ ${record.overtime}`}</p>
         </div>
       ),
@@ -105,34 +111,37 @@ const TeamReportTable = ({ date }) => {
 
   const getAttendance = useCallback(async () => {
     try {
-      const { data } = await Api.Post(`/organization/${activeOrganization?.id}/team-report/weekly-summary`, {
-        date: date.toISOString()
-      })
+      const { data } = await Api.Post({
+        url: `/organization/${activeOrganization?.id}/team-report/weekly-summary`,
+        postData: {
+          date: date.toISOString(),
+        },
+      });
       setRecords(data);
     } catch (error) {
       console.error(error);
     }
-  }, [activeOrganization, date])
+  }, [activeOrganization, date]);
 
   useEffect(() => {
-    getAttendance()
-  }, [getAttendance])
+    getAttendance();
+  }, [getAttendance]);
 
   return (
-    <div className='overflow-auto mt-2'>
+    <div className="overflow-auto mt-2">
       <Table
         columns={columns}
         dataSource={records}
-        bordered='true'
-        className='poppins-font'
-            locale={{
-                      emptyText: (
-                        <Empty
-                          image={Empty.PRESENTED_IMAGE_SIMPLE}
-                          description="No Team Report Found"
-                        />
-                      ),
-                    }}
+        bordered="true"
+        className="poppins-font"
+        locale={{
+          emptyText: (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="No Team Report Found"
+            />
+          ),
+        }}
       />
     </div>
   );

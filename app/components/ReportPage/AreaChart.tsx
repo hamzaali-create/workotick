@@ -1,7 +1,9 @@
 import React from 'react';
-import Chart from 'react-apexcharts';
+
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 import dot1 from "../../assets/dot1.svg";
 import dot2 from "../../assets/dot2.svg";
+import dynamic from 'next/dynamic';
 
 export default function AreaChart() {
   const state = {

@@ -1,6 +1,14 @@
 "use client";
 import Api from "@/utils/Axios";
-import { Button, Checkbox, Form, Input, Typography, message } from "antd";
+import { message } from "antd";
+const Title = dynamic(() => import("antd/es/typography/Title"), { ssr: false });
+import Paragraph from "antd/es/typography/Paragraph";
+import Form from "antd/es/form";
+import Input from "antd/es/input";
+import Checkbox from "antd/es/checkbox";
+import Button from "antd/es/button";
+import Typography from "antd/es/typography";
+
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +19,7 @@ import AuthLayout from "@/layouts/AuthLayout";
 
 import Link from "next/link";
 import { setAuthenticated } from "../redux/slices/authSlice";
+import dynamic from "next/dynamic";
 function Login() {
   const [emailDisabled, setEmailDisabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,7 +54,7 @@ function Login() {
 
   const handleFormSubmit = useCallback(
     async (values: any) => {
-      console.log(values, "postData");
+     
       try {
         setLoading(true);
         // const { data, message } = await Api.Post("/login", values);
@@ -91,23 +100,23 @@ function Login() {
       <Guest>
         <AuthLayout>
           <div className="mt-10 mb-5">
-            <Typography.Title
+            <Title
               level={2}
               className="text-left text-dark font-semibold font-poppins"
             >
               Login to your <span className="text-secondary">Workotick</span>{" "}
               account
-            </Typography.Title>
-            <Typography.Paragraph className="font-poppins text-left font-light">
+            </Title>
+            <Paragraph className="font-poppins text-left font-light">
               Enter Your Gateway to Innovation — Your Activity Portal Awaits.
-            </Typography.Paragraph>
+            </Paragraph>
           </div>
 
           <Form
             layout="vertical"
             className="mt-0 "
             onFinish={handleFormSubmit}
-            loading={loading}
+            // loading={loading}
             form={loginForm}
           >
             <div className="">

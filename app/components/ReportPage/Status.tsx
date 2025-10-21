@@ -1,40 +1,47 @@
+"use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { Tooltip } from "antd";
+import Tooltip from "antd/es/tooltip";
+
 import {
   FieldTimeOutlined,
   HistoryOutlined,
   InfoCircleOutlined,
   LineChartOutlined,
 } from "@ant-design/icons";
-import Api from "../../utils/Axios";
+
 import { useSelector } from "react-redux";
-import { tooltip } from '../../utils/tooptiips';
+
 import MyReportStatus from "../Skeletons/MyReportStatus";
 import LazyLoad from "../LazyLoad";
+import Api from "@/utils/Axios";
+import { tooltip } from "@/utils/tooptiips";
+import { StatsClock } from "@/type/Stats";
 
-export default function Status({ date }) {
-
-  const [stats, setStats] = useState({});
+export default function Status({ date }: any) {
+  const [stats, setStats] = useState<StatsClock | null>(null);
   const [loading, setLoading] = useState(false);
-  const { activeOrganization } = useSelector((state) => state.auth);
+  const activeOrganization = useSelector(
+    (state: any) => state.auth?.activeOrganization
+  );
 
   const capitalizeWords = (str: string) =>
     str.replace(/\b\w/g, (char) => char.toUpperCase());
 
   const getQuickStats = useCallback(async () => {
     try {
-      setLoading(true)
-      const { data } = await Api.Post(
-        `/organization/${activeOrganization?.id}/my-report/quick-stats`,
-        {
-          date: date.toISOString()
-        }
-      );
+      setLoading(true);
+      const { data } = await Api.Post({
+        url: `/organization/${activeOrganization?.id}/my-report/quick-stats`,
+        postData: {
+          date: date.toISOString(),
+        },
+      });
       setStats(data);
+      console.log(stats, "stats");
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }, [activeOrganization, date]);
 
@@ -71,7 +78,7 @@ export default function Status({ date }) {
               <p className="text-sm  font-medium mt-1 text-[#585B5E]">
                 Active Time
               </p>
-              <p className=" font-medium text-3xl">{stats.active_time}</p>
+              <p className=" font-medium text-3xl">{stats &&  stats.active_time}</p>
             </div>
           </div>
         </div>
@@ -90,7 +97,7 @@ export default function Status({ date }) {
               <p className="text-sm mt-1 font-medium text-[#585B5E]">
                 Logged Time
               </p>
-              <p className=" font-medium text-3xl">{stats.logged_time}</p>
+              <p className=" font-medium text-3xl">{stats && stats.logged_time}</p>
             </div>
           </div>
         </div>
@@ -109,7 +116,9 @@ export default function Status({ date }) {
               <p className="text-sm mt-1 font-medium text-[#585B5E]">
                 Current Status
               </p>
-              <p className=" font-medium text-3xl capitalize">{stats.app_status}</p>
+              <p className=" font-medium text-3xl capitalize">
+                {stats && stats.app_status}
+              </p>
             </div>
           </div>
         </div>

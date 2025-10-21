@@ -1,5 +1,5 @@
 import { Skeleton, Space } from 'antd'
-import RecentActivities from './RecentActivities'
+import RecentActivities from './RecentActivitiesLoader'
 
 export default function TImesheetDrawerLoader() {
 	return (

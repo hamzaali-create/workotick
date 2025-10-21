@@ -1,7 +1,10 @@
-import { Skeleton, Space } from 'antd'
-import React from 'react'
 
-export default function RecentActivities({ cards = 3 }:any) {
+import React from 'react'
+import Skeleton from "antd/es/skeleton";
+import Space from "antd/es/space";
+
+
+export default function RecentActivitiesLoader({ cards = 3 }:any) {
   return (
     <div className='rounded bg-white mt-5 p-4'>
       <Space align='center' className='justify-between w-full'>

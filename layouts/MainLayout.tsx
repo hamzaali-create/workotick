@@ -14,7 +14,7 @@ function MainLayout({ children }: any) {
   return (
     <>
       <Auth>
-        <Subscriber>
+        {/* <Subscriber> */}
           <Layout>
             <Header
               style={{
@@ -34,7 +34,7 @@ function MainLayout({ children }: any) {
               </Layout>
             </Layout>
           </Layout>
-        </Subscriber>
+        {/* </Subscriber> */}
       </Auth>
     </>
   );

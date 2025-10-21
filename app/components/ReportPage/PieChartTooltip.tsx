@@ -3,7 +3,8 @@ import { Avatar, Badge } from 'antd';
 import dayjs from 'dayjs';
 import React from 'react';
 import rotate from '../../assets/rotate.png';
-import { getFormattedTimestamp } from '../../utils/helpers';
+import { getFormattedTimestamp } from '@/utils/helpers';
+
 
 const PeiChartTooltip = ({ contributor, timezone = 'utc' }) => {
 
